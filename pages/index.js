@@ -4,6 +4,7 @@ import Image from 'next/image'
 import styles from '../styles/Login.module.css'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
+import Particles from '../components/Particles'
 
 export default function Login() {
   const router = useRouter()
@@ -100,8 +101,13 @@ export default function Login() {
       <Head>
         <title>BandoEasy - Accesso al Portale Bandi</title>
         <meta name="description" content="Accesso al portale bandi di BandoEasy - La piattaforma per i bandi di finanziamento italiani" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+
+      <div className={styles.particlesContainer}>
+        <Particles className={styles.particles} key="loginParticles" />
+      </div>
 
       <div className={styles.loginSection}>
         <div className={styles.logoContainer}>
@@ -206,13 +212,12 @@ export default function Login() {
 
         <div className={styles.testimonialContent}>
           <blockquote className={styles.quote}>
-            "Grazie a BandoEasy abbiamo ottenuto un finanziamento di €120.000 dal bando PNRR per la digitalizzazione della nostra azienda."
+            "Grazie a BandoEasy abbiamo ottenuto un finanziamento di €120.000 per la digitalizzazione della nostra azienda."
           </blockquote>
           
           <div className={styles.author}>
             <h3>Marco Bianchi</h3>
             <p>Direttore, Innovazione Italiana Srl</p>
-            <p>PMI nel settore manifatturiero</p>
           </div>
           
           <div className={styles.navigation}>

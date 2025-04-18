@@ -241,6 +241,54 @@
   margin-bottom: 1.75rem;
 }
 
+/* More compact grid for dashboard stats */
+.compactGrid {
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+/* Two-column layout for dashboard content */
+.dashboardTwoColumns {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+/* On larger screens, use a two-column layout */
+@media (min-width: 1024px) {
+  .dashboardTwoColumns {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* More compact sections */
+.compactSection {
+  margin-top: 1rem;
+  padding-top: 1rem;
+}
+
+/* More compact analytics container */
+.compactAnalytics {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+/* More compact chart heights */
+.compactChart {
+  height: 180px;
+}
+
+/* More compact activity list */
+.compactList {
+  gap: 0.5rem;
+}
+
+.compactList .activityItem {
+  padding: 0.75rem;
+}
+
 .statsCard {
   background-color: #fff;
   border-radius: 12px;
@@ -253,6 +301,20 @@
 .statsCard:hover {
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.05);
   transform: translateY(-2px);
+}
+
+/* More compact stats card */
+.compactGrid .statsCard {
+  padding: 1rem;
+}
+
+.compactGrid .statsValue {
+  font-size: 1.5rem;
+  margin: 0.25rem 0;
+}
+
+.compactGrid .statsHeader {
+  margin-bottom: 0.5rem;
 }
 
 .statsHeader {
@@ -553,6 +615,11 @@
   margin-top: 2rem;
   padding-top: 1.5rem;
   border-top: 1px solid #e5e7eb;
+}
+
+/* More compact admin section */
+.compactSection.adminSection {
+  border-top: none;
 }
 
 .sectionTitle {
