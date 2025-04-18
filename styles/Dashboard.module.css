@@ -1318,6 +1318,18 @@
   flex-direction: column;
 }
 
+.tuttiSectionCompact {
+  margin-top: -1.5rem;
+}
+
+.tuttiSectionCompact .tuttiHeader {
+  margin-bottom: 0.5rem;
+}
+
+.tuttiSectionCompact .tableSectionWrapper {
+  margin-top: 0;
+}
+
 .tuttiHeader {
   display: flex;
   flex-direction: column;

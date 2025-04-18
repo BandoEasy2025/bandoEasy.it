@@ -475,7 +475,6 @@ export default function Dashboard() {
             {activeItem === 'live-monitor' && 'Live Update Monitor'}
             {activeItem === 'guides' && 'Guide e FAQ'}
             {activeItem === 'support' && 'Supporto'}
-            {activeItem === 'tutti-bandi' && 'Tutti i Bandi'}
           </h1>
 
           {activeItem === 'dashboard' && (
@@ -700,8 +699,8 @@ export default function Dashboard() {
           )}
 
           {activeItem === 'tutti-bandi' && (
-            <div className={styles.tuttiSection}>
-              {/* Header with filter button */}
+            <div className={`${styles.tuttiSection} ${styles.tuttiSectionCompact}`}>
+              {/* Table section moved up - removed the separate title and keeping just the table */}
               <div className={styles.tuttiHeader}>
                 <div className={styles.filterButtonContainer}>
                   <button 
