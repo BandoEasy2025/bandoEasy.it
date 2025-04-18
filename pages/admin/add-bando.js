@@ -1,9 +1,8 @@
 import { useState, useEffect } from 'react'
 import Head from 'next/head'
-import Image from 'next/image'
 import { useRouter } from 'next/router'
-import Link from 'next/link'
 import styles from '../../styles/AddBando.module.css'
+import dashboardStyles from '../../styles/Dashboard.module.css'
 import { createClient } from '@supabase/supabase-js'
 
 // Initialize Supabase client
@@ -13,7 +12,6 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey)
 
 export default function AddBando() {
   const router = useRouter()
-  const [isLoading, setIsLoading] = useState(true)
   const [isSaving, setIsSaving] = useState(false)
   const [message, setMessage] = useState({ type: '', content: '' })
   
@@ -37,22 +35,16 @@ export default function AddBando() {
     link_bando: ''
   })
 
-  // Check authentication and admin role
+  // Check admin role
   useEffect(() => {
-    const isLoggedIn = localStorage.getItem('isLoggedIn')
+    console.log('AddBando component mounted')
     const userRole = localStorage.getItem('userRole')
-    
-    if (!isLoggedIn) {
-      router.push('/')
-      return
-    }
+    console.log('User role from localStorage:', userRole)
     
     if (userRole !== 'admin') {
+      console.log('Redirecting to home - not admin')
       router.push('/home')
-      return
     }
-    
-    setIsLoading(false)
   }, [router])
 
   // Handle form input changes
@@ -118,41 +110,16 @@ export default function AddBando() {
     }
   }
 
-  // Go back to home
-  const handleGoBack = () => {
-    router.push('/home')
-  }
-
-  // Show loading state
-  if (isLoading) {
-    return <div className={styles.loading}>Caricamento...</div>
-  }
-
   return (
-    <div className={styles.container}>
+    <>
       <Head>
         <title>Aggiungi Bando | BandoEasy</title>
         <meta name="description" content="Aggiungi un nuovo bando al database" />
-        <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <nav className={styles.navbar}>
-        <Link href="/home" className={styles.logoContainer}>
-          <Image src="/logo.svg" alt="BandoEasy Logo" width={32} height={32} />
-          <span className={styles.logoText}>BandoEasy</span>
-        </Link>
-      </nav>
-
-      <main className={styles.main}>
-        <div className={styles.header}>
-          <button onClick={handleGoBack} className={styles.backButton}>
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M19 12H5M12 19l-7-7 7-7"/>
-            </svg>
-            Torna alla Home
-          </button>
-          
-          <h1 className={styles.title}>Aggiungi Nuovo Bando</h1>
+      <div className={dashboardStyles.mainContent}>
+        <div className={styles.pageHeader}>
+          <h1>Aggiungi Nuovo Bando</h1>
         </div>
 
         {message.content && (
@@ -278,7 +245,7 @@ export default function AddBando() {
               </div>
             </div>
             
-            {/* Specific Information */}
+            {/* Specifics */}
             <div className={styles.formSection}>
               <h2>Specifiche</h2>
               
@@ -303,77 +270,90 @@ export default function AddBando() {
                   onChange={handleChange}
                 />
               </div>
-            </div>
-          </div>
-          
-          {/* Larger Text Fields */}
-          <div className={styles.formWide}>
-            <div className={styles.formGroup}>
-              <label htmlFor="requisiti">Requisiti</label>
-              <textarea
-                id="requisiti"
-                name="requisiti"
-                value={formData.requisiti}
-                onChange={handleChange}
-                rows="4"
-              />
+              
+              <div className={styles.formGroup}>
+                <label htmlFor="link_bando">Link al Bando</label>
+                <input
+                  type="url"
+                  id="link_bando"
+                  name="link_bando"
+                  value={formData.link_bando}
+                  onChange={handleChange}
+                  placeholder="https://..."
+                />
+              </div>
             </div>
             
-            <div className={styles.formGroup}>
-              <label htmlFor="spese_ammissibili">Spese Ammissibili</label>
-              <textarea
-                id="spese_ammissibili"
-                name="spese_ammissibili"
-                value={formData.spese_ammissibili}
-                onChange={handleChange}
-                rows="4"
-              />
-            </div>
-            
-            <div className={styles.formGroup}>
-              <label htmlFor="documentazione_necessaria">Documentazione Necessaria</label>
-              <textarea
-                id="documentazione_necessaria"
-                name="documentazione_necessaria"
-                value={formData.documentazione_necessaria}
-                onChange={handleChange}
-                rows="4"
-              />
-            </div>
-            
-            <div className={styles.formGroup}>
-              <label htmlFor="descrizione">Descrizione</label>
-              <textarea
-                id="descrizione"
-                name="descrizione"
-                value={formData.descrizione}
-                onChange={handleChange}
-                rows="6"
-              />
-            </div>
-            
-            <div className={styles.formGroup}>
-              <label htmlFor="link_bando">Link al Bando</label>
-              <input
-                type="url"
-                id="link_bando"
-                name="link_bando"
-                value={formData.link_bando}
-                onChange={handleChange}
-              />
+            {/* Detailed Information */}
+            <div className={styles.formSection}>
+              <h2>Informazioni Dettagliate</h2>
+              
+              <div className={styles.formGroup}>
+                <label htmlFor="descrizione">Descrizione</label>
+                <textarea
+                  id="descrizione"
+                  name="descrizione"
+                  value={formData.descrizione}
+                  onChange={handleChange}
+                  rows="4"
+                ></textarea>
+              </div>
+              
+              <div className={styles.formGroup}>
+                <label htmlFor="requisiti">Requisiti</label>
+                <textarea
+                  id="requisiti"
+                  name="requisiti"
+                  value={formData.requisiti}
+                  onChange={handleChange}
+                  rows="4"
+                ></textarea>
+              </div>
+              
+              <div className={styles.formGroup}>
+                <label htmlFor="spese_ammissibili">Spese Ammissibili</label>
+                <textarea
+                  id="spese_ammissibili"
+                  name="spese_ammissibili"
+                  value={formData.spese_ammissibili}
+                  onChange={handleChange}
+                  rows="4"
+                ></textarea>
+              </div>
+              
+              <div className={styles.formGroup}>
+                <label htmlFor="documentazione_necessaria">Documentazione Necessaria</label>
+                <textarea
+                  id="documentazione_necessaria"
+                  name="documentazione_necessaria"
+                  value={formData.documentazione_necessaria}
+                  onChange={handleChange}
+                  rows="4"
+                ></textarea>
+              </div>
             </div>
           </div>
           
           <div className={styles.formActions}>
-            <button type="button" onClick={handleGoBack} className={styles.buttonSecondary}>
-              Annulla
-            </button>
-            <button type="submit" className={styles.buttonPrimary} disabled={isSaving}>
+            <button 
+              type="submit" 
+              className={styles.submitButton}
+              disabled={isSaving}
+            >
               {isSaving ? 'Salvataggio...' : 'Salva Bando'}
+            </button>
+            
+            <button 
+              type="button" 
+              className={styles.cancelButton}
+              onClick={() => router.push('/home')}
+              disabled={isSaving}
+            >
+              Annulla
             </button>
           </div>
         </form>
-      </main>
-    </div>
+      </div>
+    </>
   )
 } 

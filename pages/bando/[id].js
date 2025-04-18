@@ -57,9 +57,9 @@ export default function BandoDetail() {
     }
   }
 
-  // Handle navigation back to the home page
+  // Handle navigation back to the previous page
   const handleGoBack = () => {
-    router.push('/home')
+    router.back()
   }
 
   // Handle tab change
@@ -105,13 +105,6 @@ export default function BandoDetail() {
         <meta name="description" content={`Dettagli del bando: ${bandoDetails.nome_bando || ''}`} />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
-      <nav className={styles.navbar}>
-        <Link href="/home" className={styles.logoContainer}>
-          <Image src="/logo.svg" alt="BandoEasy Logo" width={32} height={32} />
-          <span className={styles.logoText}>BandoEasy</span>
-        </Link>
-      </nav>
 
       <main className={styles.main}>
         <div className={styles.header}>
@@ -311,22 +304,101 @@ export default function BandoDetail() {
             {/* Dettagli Tab */}
             {activeTab === 'dettagli' && (
               <div className={styles.section}>
-                <h2>Dettagli Aggiuntivi</h2>
-                <p>{bandoDetails.dettagli_aggiuntivi || 'Nessun dettaglio aggiuntivo disponibile'}</p>
+                <div className={styles.infoGrid}>
+                  <div className={styles.infoItem}>
+                    <h3>Stato del Bando</h3>
+                    <p>{bandoDetails.stato || 'Non specificato'}</p>
+                  </div>
+                  
+                  <div className={styles.infoItem}>
+                    <h3>Importo Totale</h3>
+                    <p>{bandoDetails.budget 
+                      ? `€${bandoDetails.budget.toLocaleString('it-IT')}` 
+                      : 'Non specificato'}</p>
+                  </div>
+                  
+                  <div className={styles.infoItem}>
+                    <h3>Importo Massimo per Domanda</h3>
+                    <p>{bandoDetails.importo_massimo 
+                      ? `€${bandoDetails.importo_massimo.toLocaleString('it-IT')}` 
+                      : 'Non specificato'}</p>
+                  </div>
+                  
+                  <div className={styles.infoItem}>
+                    <h3>Durata</h3>
+                    <p>{bandoDetails.durata || 'Non specificata'}</p>
+                  </div>
+                </div>
+                
+                {bandoDetails.dettagli_aggiuntivi && (
+                  <div className={styles.detailSection}>
+                    <h2>Dettagli Aggiuntivi</h2>
+                    <p>{bandoDetails.dettagli_aggiuntivi}</p>
+                  </div>
+                )}
                 
                 {bandoDetails.modalita_presentazione && (
-                  <>
+                  <div className={styles.detailSection}>
                     <h2>Modalità di Presentazione</h2>
                     <p>{bandoDetails.modalita_presentazione}</p>
-                  </>
+                  </div>
                 )}
                 
                 {bandoDetails.contatti && (
-                  <>
+                  <div className={styles.detailSection}>
                     <h2>Contatti</h2>
                     <p>{bandoDetails.contatti}</p>
-                  </>
+                  </div>
                 )}
+                
+                {bandoDetails.note && (
+                  <div className={styles.detailSection}>
+                    <h2>Note</h2>
+                    <p>{bandoDetails.note}</p>
+                  </div>
+                )}
+                
+                <div className={styles.detailSection}>
+                  <h2>Informazioni Extra</h2>
+                  <div className={styles.infoTable}>
+                    <div className={styles.infoRow}>
+                      <div className={styles.infoLabel}>Link al sito ufficiale:</div>
+                      <div className={styles.infoValue}>
+                        {bandoDetails.url_sito_ufficiale ? (
+                          <a 
+                            href={bandoDetails.url_sito_ufficiale} 
+                            target="_blank" 
+                            rel="noopener noreferrer" 
+                            className={styles.externalLink}
+                          >
+                            Visita il sito ufficiale
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                              <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"></path>
+                              <polyline points="15 3 21 3 21 9"></polyline>
+                              <line x1="10" y1="14" x2="21" y2="3"></line>
+                            </svg>
+                          </a>
+                        ) : (
+                          'Non disponibile'
+                        )}
+                      </div>
+                    </div>
+                    <div className={styles.infoRow}>
+                      <div className={styles.infoLabel}>Ultimo aggiornamento:</div>
+                      <div className={styles.infoValue}>
+                        {bandoDetails.updated_at 
+                          ? new Date(bandoDetails.updated_at).toLocaleDateString('it-IT', {
+                              day: '2-digit',
+                              month: '2-digit',
+                              year: 'numeric',
+                              hour: '2-digit',
+                              minute: '2-digit'
+                            })
+                          : 'N/A'}
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             )}
           </div>
@@ -340,10 +412,6 @@ export default function BandoDetail() {
           </div>
         </div>
       </main>
-
-      <footer className={styles.footer}>
-        <p>© BandoEasy 2025 - Piattaforma italiana per bandi di finanziamento</p>
-      </footer>
     </div>
   )
 } 

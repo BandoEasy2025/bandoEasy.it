@@ -175,6 +175,71 @@
   line-height: 1.6;
 }
 
+.detailSection {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #e5e7eb;
+}
+
+.detailSection h2 {
+  margin-bottom: 1rem;
+  font-size: 1.25rem;
+  color: #1e293b;
+}
+
+.detailSection p {
+  color: #4b5563;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+.infoTable {
+  width: 100%;
+  margin-top: 1rem;
+  background-color: #f8fafc;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  border: 1px solid #e5e7eb;
+}
+
+.infoRow {
+  display: flex;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.infoRow:last-child {
+  border-bottom: none;
+}
+
+.infoLabel {
+  flex: 0 0 30%;
+  padding: 0.75rem 1rem;
+  font-weight: 500;
+  color: #64748b;
+  background-color: #f1f5f9;
+}
+
+.infoValue {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  color: #1e293b;
+}
+
+.externalLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #2563eb;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.externalLink:hover {
+  color: #1d4ed8;
+  text-decoration: underline;
+}
+
 .actions {
   display: flex;
   flex-wrap: wrap;
