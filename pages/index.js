@@ -121,7 +121,7 @@ export default function Login() {
             <div className={styles.inputGroup}>
               <label htmlFor="email">Email</label>
               <input 
-                type="email" 
+                type="text" 
                 id="email" 
                 name="email" 
                 placeholder="Inserisci la tua email"

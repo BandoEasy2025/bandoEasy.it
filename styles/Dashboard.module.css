@@ -949,4 +949,22 @@
   font-size: 0.875rem;
   color: #6b7280;
   margin-top: 0.5rem;
+}
+
+/* Live Monitor Section Styles */
+.liveMonitorSection {
+  margin-top: 1.5rem;
+  padding: 0 1.5rem;
+}
+
+.liveMonitorContent {
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+  padding: 1.5rem;
+  min-height: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1rem;
 } 
