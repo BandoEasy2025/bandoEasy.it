@@ -49,6 +49,7 @@ export default function Login() {
       // Simulate API call
       setTimeout(() => {
         // In a real application, you'd authenticate with a backend here
+        // and store user role information in the session/localStorage
         setIsLoading(false)
         router.push('/home')
       }, 1000)
@@ -60,6 +61,7 @@ export default function Login() {
     setIsLoading(true)
     
     setTimeout(() => {
+      // In a real app, would also store user role information here
       setIsLoading(false)
       router.push('/home')
     }, 1000)
@@ -209,7 +211,7 @@ export default function Login() {
         </div>
         
         <div className={styles.copyright}>
-          © BandoEasy 2023 - Piattaforma italiana per bandi di finanziamento
+          © BandoEasy 2025 - Piattaforma italiana per bandi di finanziamento
         </div>
       </div>
     </div>

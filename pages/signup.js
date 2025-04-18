@@ -254,7 +254,7 @@ export default function Signup() {
         </div>
         
         <div className={styles.copyright}>
-          © BandoEasy 2023 - Piattaforma italiana per bandi di finanziamento
+          © BandoEasy 2025 - Piattaforma italiana per bandi di finanziamento
         </div>
       </div>
     </div>
