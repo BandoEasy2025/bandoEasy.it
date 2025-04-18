@@ -4,6 +4,12 @@ import Image from 'next/image'
 import styles from '../styles/Dashboard.module.css'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
+import { createClient } from '@supabase/supabase-js'
+
+// Initialize Supabase client using environment variables
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+const supabase = createClient(supabaseUrl, supabaseAnonKey)
 
 export default function Dashboard() {
   const router = useRouter()
@@ -13,6 +19,11 @@ export default function Dashboard() {
   const [userRole, setUserRole] = useState(null)
   const [userName, setUserName] = useState('')
   const [isLoading, setIsLoading] = useState(true)
+  const [bandi, setBandi] = useState([])
+  const [loadingBandi, setLoadingBandi] = useState(false)
+  const [currentPage, setCurrentPage] = useState(1)
+  const [totalBandi, setTotalBandi] = useState(0)
+  const itemsPerPage = 10
   
   // Check for authentication when component mounts
   useEffect(() => {
@@ -29,6 +40,56 @@ export default function Dashboard() {
     setUserName(storedUserName || 'User')
     setIsLoading(false)
   }, [router])
+  
+  // Fetch bandi data from Supabase
+  useEffect(() => {
+    async function fetchBandi() {
+      try {
+        setLoadingBandi(true)
+        
+        // Get total count for pagination
+        const { count, error: countError } = await supabase
+          .from('bandi')
+          .select('id', { count: 'exact', head: true })
+        
+        if (countError) {
+          console.error('Error fetching bandi count:', countError)
+        } else {
+          setTotalBandi(count || 0)
+        }
+        
+        // Get paginated data
+        const from = (currentPage - 1) * itemsPerPage
+        const to = from + itemsPerPage - 1
+        
+        const { data, error } = await supabase
+          .from('bandi')
+          .select('id, nome_bando, promotore, scadenza, stato')
+          .range(from, to)
+          .order('created_at', { ascending: false })
+        
+        if (error) {
+          console.error('Error fetching bandi:', error)
+          return
+        }
+        
+        setBandi(data || [])
+      } catch (error) {
+        console.error('Error:', error)
+      } finally {
+        setLoadingBandi(false)
+      }
+    }
+
+    if (activeItem === 'tutti-bandi') {
+      fetchBandi()
+    }
+  }, [activeItem, currentPage])
+  
+  // Handle page change
+  const goToPage = (page) => {
+    setCurrentPage(page)
+  }
   
   const handleLogout = () => {
     localStorage.removeItem('isLoggedIn')
@@ -90,6 +151,19 @@ export default function Dashboard() {
                 </svg>
               </div>
               Bandi Disponibili
+            </div>
+            
+            <div 
+              className={`${styles.navItem} ${activeItem === 'tutti-bandi' ? styles.navItemActive : ''}`}
+              onClick={() => setActiveItem('tutti-bandi')}
+            >
+              <div className={styles.navIcon}>
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
+                  <rect x="8" y="2" width="8" height="4" rx="1" ry="1" />
+                </svg>
+              </div>
+              Tutti i Bandi
             </div>
             
             <div 
@@ -243,6 +317,7 @@ export default function Dashboard() {
             {activeItem === 'approvals' && 'Approvazioni'}
             {activeItem === 'guides' && 'Guide e FAQ'}
             {activeItem === 'support' && 'Supporto'}
+            {activeItem === 'tutti-bandi' && 'Tutti i Bandi'}
           </h1>
 
           {activeItem === 'dashboard' && (
@@ -448,11 +523,150 @@ export default function Dashboard() {
             </>
           )}
 
-          {activeItem !== 'dashboard' && (
-            <div className={styles.contentPlaceholder}>
-              Contenuto da implementare
+          {activeItem === 'tutti-bandi' && (
+            <div>
+              {loadingBandi ? (
+                <div className={styles.loadingSpinner}>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="animate-spin">
+                    <line x1="12" y1="2" x2="12" y2="6" />
+                    <line x1="12" y1="18" x2="12" y2="22" />
+                    <line x1="4.93" y1="4.93" x2="7.76" y2="7.76" />
+                    <line x1="16.24" y1="16.24" x2="19.07" y2="19.07" />
+                    <line x1="2" y1="12" x2="6" y2="12" />
+                    <line x1="18" y1="12" x2="22" y2="12" />
+                    <line x1="4.93" y1="19.07" x2="7.76" y2="16.24" />
+                    <line x1="16.24" y1="7.76" x2="19.07" y2="4.93" />
+                  </svg>
+                </div>
+              ) : bandi.length === 0 ? (
+                <div className={styles.emptyState}>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                    <polyline points="14 2 14 8 20 8" />
+                    <line x1="16" y1="13" x2="8" y2="13" />
+                    <line x1="16" y1="17" x2="8" y2="17" />
+                    <polyline points="10 9 9 9 8 9" />
+                  </svg>
+                  <p>Nessun bando disponibile al momento</p>
+                </div>
+              ) : (
+                <div className={styles.tableWrapper}>
+                  <table className={styles.bandiTable}>
+                    <thead>
+                      <tr>
+                        <th>Nome Bando</th>
+                        <th>Promotore</th>
+                        <th>Scadenza</th>
+                        <th>Stato</th>
+                        <th>Azioni</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {bandi.map((bando) => (
+                        <tr key={bando.id}>
+                          <td className={styles.truncate}>{bando.nome_bando || 'N/A'}</td>
+                          <td>{bando.promotore || 'N/A'}</td>
+                          <td>
+                            {bando.scadenza 
+                              ? new Date(bando.scadenza).toLocaleDateString('it-IT') 
+                              : 'N/A'}
+                          </td>
+                          <td>
+                            {bando.stato && (
+                              <span 
+                                className={`${styles.statusBadge} ${
+                                  bando.stato.toLowerCase() === 'aperto' 
+                                    ? styles.statusAperto 
+                                    : bando.stato.toLowerCase() === 'chiuso' 
+                                    ? styles.statusChiuso 
+                                    : styles.statusProssimo
+                                }`}
+                              >
+                                {bando.stato}
+                              </span>
+                            )}
+                          </td>
+                          <td>
+                            <button className={styles.detailButton}>
+                              Dettagli
+                            </button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                  
+                  {/* Pagination */}
+                  {totalBandi > 0 && (
+                    <>
+                      <div className={styles.pagination}>
+                        <button 
+                          className={`${styles.pageButton} ${currentPage === 1 ? styles.pageButtonDisabled : ''}`} 
+                          onClick={() => currentPage > 1 && goToPage(currentPage - 1)}
+                          disabled={currentPage === 1}
+                          aria-label="Pagina precedente"
+                        >
+                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <polyline points="15 18 9 12 15 6" />
+                          </svg>
+                        </button>
+                        
+                        {/* Page numbers */}
+                        {Array.from({ length: Math.min(5, Math.ceil(totalBandi / itemsPerPage)) }, (_, i) => {
+                          // Show a window of 5 pages centered on current page
+                          const totalPages = Math.ceil(totalBandi / itemsPerPage)
+                          let pageNum
+                          
+                          if (totalPages <= 5) {
+                            // If there are 5 or fewer pages, show all
+                            pageNum = i + 1
+                          } else if (currentPage <= 3) {
+                            // If we're near the start, show first 5 pages
+                            pageNum = i + 1
+                          } else if (currentPage >= totalPages - 2) {
+                            // If we're near the end, show last 5 pages
+                            pageNum = totalPages - 4 + i
+                          } else {
+                            // Otherwise, show 2 before current, current, and 2 after
+                            pageNum = currentPage - 2 + i
+                          }
+                          
+                          return (
+                            <button
+                              key={pageNum}
+                              className={`${styles.pageButton} ${currentPage === pageNum ? styles.pageButtonActive : ''}`}
+                              onClick={() => goToPage(pageNum)}
+                              aria-label={`Pagina ${pageNum}`}
+                              aria-current={currentPage === pageNum ? 'page' : undefined}
+                            >
+                              {pageNum}
+                            </button>
+                          )
+                        })}
+                        
+                        <button 
+                          className={`${styles.pageButton} ${currentPage === Math.ceil(totalBandi / itemsPerPage) ? styles.pageButtonDisabled : ''}`}
+                          onClick={() => currentPage < Math.ceil(totalBandi / itemsPerPage) && goToPage(currentPage + 1)}
+                          disabled={currentPage === Math.ceil(totalBandi / itemsPerPage)}
+                          aria-label="Pagina successiva"
+                        >
+                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <polyline points="9 18 15 12 9 6" />
+                          </svg>
+                        </button>
+                      </div>
+                      
+                      <div className={styles.paginationSummary}>
+                        Mostrando {((currentPage - 1) * itemsPerPage) + 1} - {Math.min(currentPage * itemsPerPage, totalBandi)} di {totalBandi} risultati
+                      </div>
+                    </>
+                  )}
+                </div>
+              )}
             </div>
           )}
+
+          {/* Remove the placeholder card for other sections */}
         </main>
 
         {/* Footer */}
