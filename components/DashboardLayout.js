@@ -9,12 +9,14 @@ export default function DashboardLayout({ children }) {
   const [userRole, setUserRole] = useState(null)
   const [userName, setUserName] = useState('')
   const [isLoading, setIsLoading] = useState(true)
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
 
   // Check for authentication when component mounts
   useEffect(() => {
     const isLoggedIn = localStorage.getItem('isLoggedIn')
     const storedUserRole = localStorage.getItem('userRole')
     const storedUserName = localStorage.getItem('userName')
+    const storedSidebarState = localStorage.getItem('sidebarCollapsed')
     
     if (!isLoggedIn || !storedUserRole) {
       console.log('Not logged in or missing role, redirecting to home')
@@ -24,6 +26,7 @@ export default function DashboardLayout({ children }) {
     
     setUserRole(storedUserRole)
     setUserName(storedUserName || 'User')
+    setSidebarCollapsed(storedSidebarState === 'true')
     setIsLoading(false)
     
     // Set active item based on current path - improved logic for nested routes
@@ -66,6 +69,15 @@ export default function DashboardLayout({ children }) {
     router.push('/')
   }
 
+  const toggleSidebar = (e) => {
+    // Prevent event propagation to avoid unwanted navigation
+    if (e) e.stopPropagation();
+    
+    const newCollapsedState = !sidebarCollapsed;
+    setSidebarCollapsed(newCollapsedState);
+    localStorage.setItem('sidebarCollapsed', newCollapsedState.toString());
+  }
+
   // Show loading state while checking authentication
   if (isLoading) {
     return <div className={styles.loading}>Loading...</div>
@@ -74,16 +86,16 @@ export default function DashboardLayout({ children }) {
   return (
     <div className={styles.dashboardContainer}>
       {/* Sidebar Navigation */}
-      <aside className={styles.sidebar}>
+      <aside className={`${styles.sidebar} ${sidebarCollapsed ? styles.sidebarCollapsed : ''}`}>
         <div className={styles.sidebarHeader}>
           <Image src="/logo.svg" alt="BandoEasy Logo" width={32} height={32} />
-          <span className={styles.logoText}>Bando Easy</span>
+          {!sidebarCollapsed && <span className={styles.logoText}>Bando Easy</span>}
         </div>
 
         <nav className={styles.navMenu}>
           {/* Main Navigation */}
           <div className={styles.navSection}>
-            <div className={styles.sectionTitle}>Principale</div>
+            {!sidebarCollapsed && <div className={styles.sectionTitle}>Principale</div>}
             
             <div 
               className={`${styles.navItem} ${activeItem === 'dashboard' ? styles.navItemActive : ''}`}
@@ -91,6 +103,7 @@ export default function DashboardLayout({ children }) {
                 setActiveItem('dashboard')
                 router.push('/home')
               }}
+              data-tooltip="Dashboard"
             >
               <div className={styles.navIcon}>
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -100,7 +113,7 @@ export default function DashboardLayout({ children }) {
                   <rect x="3" y="14" width="7" height="7" />
                 </svg>
               </div>
-              Dashboard
+              {!sidebarCollapsed && "Dashboard"}
             </div>
             
             <div 
@@ -109,6 +122,7 @@ export default function DashboardLayout({ children }) {
                 setActiveItem('bandi')
                 router.push('/bandi')
               }}
+              data-tooltip="Bandi Disponibili"
             >
               <div className={styles.navIcon}>
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -119,7 +133,7 @@ export default function DashboardLayout({ children }) {
                   <polyline points="10 9 9 9 8 9" />
                 </svg>
               </div>
-              Bandi Disponibili
+              {!sidebarCollapsed && "Bandi Disponibili"}
             </div>
             
             <div 
@@ -128,6 +142,7 @@ export default function DashboardLayout({ children }) {
                 setActiveItem('tutti-bandi')
                 router.push('/tutti-bandi')
               }}
+              data-tooltip="Tutti i Bandi"
             >
               <div className={styles.navIcon}>
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -135,7 +150,7 @@ export default function DashboardLayout({ children }) {
                   <rect x="8" y="2" width="8" height="4" rx="1" ry="1" />
                 </svg>
               </div>
-              Tutti i Bandi
+              {!sidebarCollapsed && "Tutti i Bandi"}
             </div>
             
             <div 
@@ -144,6 +159,7 @@ export default function DashboardLayout({ children }) {
                 setActiveItem('applications')
                 router.push('/applications')
               }}
+              data-tooltip="Le Mie Domande"
             >
               <div className={styles.navIcon}>
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -151,14 +167,14 @@ export default function DashboardLayout({ children }) {
                   <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
                 </svg>
               </div>
-              Le Mie Domande
+              {!sidebarCollapsed && "Le Mie Domande"}
             </div>
           </div>
 
           {/* Admin Section - Will be conditionally rendered based on role */}
           {userRole === 'admin' && (
             <div className={styles.navSection}>
-              <div className={styles.sectionTitle}>Amministrazione</div>
+              {!sidebarCollapsed && <div className={styles.sectionTitle}>Amministrazione</div>}
               
               <div 
                 className={`${styles.navItem} ${activeItem === 'users' ? styles.navItemActive : ''}`}
@@ -167,6 +183,7 @@ export default function DashboardLayout({ children }) {
                   setActiveItem('users')
                   router.push('/admin/users')
                 }}
+                data-tooltip="Gestione Utenti"
               >
                 <div className={styles.navIcon}>
                   <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -176,7 +193,7 @@ export default function DashboardLayout({ children }) {
                     <path d="M16 3.13a4 4 0 0 1 0 7.75" />
                   </svg>
                 </div>
-                Gestione Utenti
+                {!sidebarCollapsed && "Gestione Utenti"}
               </div>
               
               <div 
@@ -186,6 +203,7 @@ export default function DashboardLayout({ children }) {
                   setActiveItem('manage-bandi')
                   router.push('/admin/manage-bandi')
                 }}
+                data-tooltip="Gestione Bandi"
               >
                 <div className={styles.navIcon}>
                   <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -193,7 +211,7 @@ export default function DashboardLayout({ children }) {
                     <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
                   </svg>
                 </div>
-                Gestione Bandi
+                {!sidebarCollapsed && "Gestione Bandi"}
               </div>
               
               <div 
@@ -203,6 +221,7 @@ export default function DashboardLayout({ children }) {
                   setActiveItem('add-bando')
                   router.push('/admin/add-bando')
                 }}
+                data-tooltip="Aggiungi Bando"
               >
                 <div className={styles.navIcon}>
                   <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -210,7 +229,7 @@ export default function DashboardLayout({ children }) {
                     <line x1="5" y1="12" x2="19" y2="12"></line>
                   </svg>
                 </div>
-                Aggiungi Bando
+                {!sidebarCollapsed && "Aggiungi Bando"}
               </div>
               
               <div 
@@ -220,6 +239,7 @@ export default function DashboardLayout({ children }) {
                   setActiveItem('approvals')
                   router.push('/admin/approvals')
                 }}
+                data-tooltip="Approvazioni"
               >
                 <div className={styles.navIcon}>
                   <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -227,7 +247,7 @@ export default function DashboardLayout({ children }) {
                     <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
                   </svg>
                 </div>
-                Approvazioni
+                {!sidebarCollapsed && "Approvazioni"}
               </div>
               
               {/* Live Update Monitor */}
@@ -238,20 +258,21 @@ export default function DashboardLayout({ children }) {
                   setActiveItem('live-monitor')
                   router.push('/admin/live-monitor')
                 }}
+                data-tooltip="Live Monitor"
               >
                 <div className={styles.navIcon}>
                   <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
                   </svg>
                 </div>
-                Live Monitor
+                {!sidebarCollapsed && "Live Monitor"}
               </div>
             </div>
           )}
 
           {/* Support and Help section - visible to all users */}
           <div className={styles.navSection}>
-            <div className={styles.sectionTitle}>Supporto</div>
+            {!sidebarCollapsed && <div className={styles.sectionTitle}>Supporto</div>}
             
             <div 
               className={`${styles.navItem} ${activeItem === 'guides' ? styles.navItemActive : ''}`}
@@ -259,6 +280,7 @@ export default function DashboardLayout({ children }) {
                 setActiveItem('guides')
                 router.push('/guides')
               }}
+              data-tooltip="Guide e FAQ"
             >
               <div className={styles.navIcon}>
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -267,7 +289,7 @@ export default function DashboardLayout({ children }) {
                   <line x1="12" y1="17" x2="12.01" y2="17" />
                 </svg>
               </div>
-              Guide e FAQ
+              {!sidebarCollapsed && "Guide e FAQ"}
             </div>
             
             <div 
@@ -276,17 +298,35 @@ export default function DashboardLayout({ children }) {
                 setActiveItem('support')
                 router.push('/support')
               }}
+              data-tooltip="Supporto"
             >
               <div className={styles.navIcon}>
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
                 </svg>
               </div>
-              Supporto
+              {!sidebarCollapsed && "Supporto"}
             </div>
           </div>
         </nav>
       </aside>
+
+      {/* Toggle Button - Moved outside of the sidebar */}
+      <button 
+        className={styles.toggleSidebarButton} 
+        onClick={toggleSidebar} 
+        aria-label={sidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          {sidebarCollapsed ? (
+            // Right arrow when collapsed (to expand)
+            <path d="M9 18l6-6-6-6" />
+          ) : (
+            // Left arrow when expanded (to collapse)
+            <path d="M15 18l-6-6 6-6" />
+          )}
+        </svg>
+      </button>
 
       {/* Main Content Area */}
       <div className={styles.contentWrapper}>
