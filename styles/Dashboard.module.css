@@ -1630,4 +1630,19 @@
 .bandiTableContainer {
   margin-top: 1rem;
   width: 100%;
+}
+
+/* Footer styles */
+.footer {
+  margin-top: auto;
+  padding: 1rem 1.75rem;
+  border-top: 1px solid #e9ecef;
+  background-color: #fff;
+  text-align: center;
+  color: #6b7280;
+  font-size: 0.875rem;
+}
+
+.footer p {
+  margin: 0;
 } 
