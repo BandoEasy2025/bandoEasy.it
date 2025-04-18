@@ -619,7 +619,10 @@ export default function Dashboard() {
                             )}
                           </td>
                           <td>
-                            <button className={styles.detailButton}>
+                            <button 
+                              className={styles.detailButton}
+                              onClick={() => router.push(`/bando/${bando.id}`)}
+                            >
                               Dettagli
                             </button>
                           </td>
