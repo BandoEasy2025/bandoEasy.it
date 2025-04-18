@@ -4,6 +4,7 @@ import Image from 'next/image'
 import styles from '../styles/Login.module.css'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
+import Particles from '../components/Particles'
 
 export default function Signup() {
   const router = useRouter()
@@ -83,9 +84,13 @@ export default function Signup() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
+      <div className={styles.particlesContainer}>
+        <Particles className={styles.particles} key="signupParticles" />
+      </div>
+
       <div className={styles.loginSection}>
         <div className={styles.logoContainer}>
-          <div className={styles.logo}>
+          <div className={styles.logo} onClick={() => router.push('/')} style={{ cursor: 'pointer' }}>
             <Image src="/logo.svg" alt="BandoEasy Logo" width={40} height={40} />
             <span>Bando Easy</span>
           </div>
@@ -195,7 +200,7 @@ export default function Signup() {
           </form>
           
           <p className={styles.signup}>
-            Hai già un account? <Link href="/" className={styles.signupLink}>Accedi</Link>
+            Hai già un account? <Link href="/login" className={styles.signupLink}>Accedi</Link>
           </p>
         </div>
       </div>

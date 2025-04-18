@@ -183,6 +183,11 @@ export default function AddBando() {
                   <option value="In arrivo">In arrivo</option>
                 </select>
               </div>
+            </div>
+            
+            {/* Importi e Località */}
+            <div className={styles.formSection}>
+              <h2>Importi e Località</h2>
               
               <div className={styles.formGroup}>
                 <label htmlFor="importo_min">Importo Minimo (€)</label>
@@ -205,11 +210,6 @@ export default function AddBando() {
                   onChange={handleChange}
                 />
               </div>
-            </div>
-            
-            {/* Location Information */}
-            <div className={styles.formSection}>
-              <h2>Località</h2>
               
               <div className={styles.formGroup}>
                 <label htmlFor="regione">Regione</label>
@@ -232,6 +232,11 @@ export default function AddBando() {
                   onChange={handleChange}
                 />
               </div>
+            </div>
+            
+            {/* Località e Specifiche */}
+            <div className={styles.formSection}>
+              <h2>Specifiche</h2>
               
               <div className={styles.formGroup}>
                 <label htmlFor="comune">Comune</label>
@@ -243,11 +248,6 @@ export default function AddBando() {
                   onChange={handleChange}
                 />
               </div>
-            </div>
-            
-            {/* Specifics */}
-            <div className={styles.formSection}>
-              <h2>Specifiche</h2>
               
               <div className={styles.formGroup}>
                 <label htmlFor="settore">Settore</label>
@@ -284,9 +284,9 @@ export default function AddBando() {
               </div>
             </div>
             
-            {/* Detailed Information */}
+            {/* Dettagli 1 */}
             <div className={styles.formSection}>
-              <h2>Informazioni Dettagliate</h2>
+              <h2>Descrizione e Requisiti</h2>
               
               <div className={styles.formGroup}>
                 <label htmlFor="descrizione">Descrizione</label>
@@ -295,7 +295,7 @@ export default function AddBando() {
                   name="descrizione"
                   value={formData.descrizione}
                   onChange={handleChange}
-                  rows="4"
+                  rows="3"
                 ></textarea>
               </div>
               
@@ -306,9 +306,14 @@ export default function AddBando() {
                   name="requisiti"
                   value={formData.requisiti}
                   onChange={handleChange}
-                  rows="4"
+                  rows="3"
                 ></textarea>
               </div>
+            </div>
+            
+            {/* Dettagli 2 */}
+            <div className={styles.formSection}>
+              <h2>Altre Informazioni</h2>
               
               <div className={styles.formGroup}>
                 <label htmlFor="spese_ammissibili">Spese Ammissibili</label>
@@ -317,7 +322,7 @@ export default function AddBando() {
                   name="spese_ammissibili"
                   value={formData.spese_ammissibili}
                   onChange={handleChange}
-                  rows="4"
+                  rows="3"
                 ></textarea>
               </div>
               
@@ -328,7 +333,7 @@ export default function AddBando() {
                   name="documentazione_necessaria"
                   value={formData.documentazione_necessaria}
                   onChange={handleChange}
-                  rows="4"
+                  rows="3"
                 ></textarea>
               </div>
             </div>

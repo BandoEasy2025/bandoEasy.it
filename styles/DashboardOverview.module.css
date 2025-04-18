@@ -1,0 +1,717 @@
+.dashboardOverviewContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  width: 100%;
+}
+
+/* Section Styles */
+.overviewSection,
+.applicationStatusSection,
+.timelineSection,
+.fundingAnalyticsSection,
+.recommendationsSection,
+.quickActionsSection {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  padding: 1.5rem;
+}
+
+.sectionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.sectionTitle {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1e293b;
+  position: relative;
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.25rem;
+}
+
+.sectionTitle::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 2.5rem;
+  height: 2px;
+  background: #3b82f6;
+  border-radius: 2px;
+}
+
+/* Filter Tabs */
+.filterTabs {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.filterTab {
+  background: #f9fafb;
+  border: 1px solid #f1f3f5;
+  border-radius: 8px;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #4b5563;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.filterTab:hover {
+  background: #f1f5f9;
+  color: #3b82f6;
+}
+
+.activeFilter {
+  background: #eff6ff;
+  color: #3b82f6;
+  font-weight: 600;
+  border-color: #bfdbfe;
+}
+
+/* Stats Grid */
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+.statsCard {
+  background-color: white;
+  border-radius: 8px;
+  padding: 1.25rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  border: 1px solid #f1f3f5;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.statsCard:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.statsHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.statsTitle {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #64748b;
+}
+
+.statsIconWrapper {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  color: white;
+}
+
+.statsIcon1 {
+  background-color: #3b82f6;
+}
+
+.statsIcon2 {
+  background-color: #10b981;
+}
+
+.statsIcon3 {
+  background-color: #7c3aed;
+}
+
+.statsIcon4 {
+  background-color: #f59e0b;
+}
+
+.statsValue {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1e293b;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.25rem;
+}
+
+.statsInfo {
+  font-size: 0.75rem;
+  color: #64748b;
+}
+
+.statsUp {
+  color: #10b981;
+  font-weight: 500;
+}
+
+.statsDown {
+  color: #ef4444;
+  font-weight: 500;
+}
+
+/* Sparkline */
+.sparkline {
+  opacity: 0.7;
+  transition: opacity 0.3s ease;
+}
+
+.statsCard:hover .sparkline {
+  opacity: 1;
+}
+
+/* Dashboard Two Columns Layout */
+.dashboardTwoColumns {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
+}
+
+@media (min-width: 1024px) {
+  .dashboardTwoColumns {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* Application Status */
+.applicationStatusContainer {
+  border-radius: 8px;
+  padding: 0.75rem 0;
+}
+
+.applicationStatusHeader {
+  margin-bottom: 1.25rem;
+  text-align: center;
+}
+
+.statusTotal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.statusTotalNumber {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.statusTotalLabel {
+  font-size: 0.75rem;
+  color: #64748b;
+  margin-top: 0.25rem;
+}
+
+.applicationStatusGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  gap: 0.75rem;
+}
+
+.statusItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.75rem;
+  border-radius: 8px;
+  background-color: #f9fafb;
+  transition: all 0.2s ease;
+  border: 1px solid #f1f3f5;
+}
+
+.statusItem:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.statusIcon {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  margin-bottom: 0.75rem;
+  color: white;
+}
+
+.statusIcon[data-status="submitted"] {
+  background-color: #3b82f6;
+}
+
+.statusIcon[data-status="reviewing"] {
+  background-color: #f59e0b;
+}
+
+.statusIcon[data-status="approved"] {
+  background-color: #10b981;
+}
+
+.statusIcon[data-status="rejected"] {
+  background-color: #ef4444;
+}
+
+.statusContent {
+  text-align: center;
+}
+
+.statusCount {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.statusLabel {
+  font-size: 0.7rem;
+  color: #64748b;
+  margin-top: 0.25rem;
+}
+
+/* Timeline */
+.timelineContainer {
+  padding: 0;
+}
+
+.timelineList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.timelineItem {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem;
+  background-color: #f9fafb;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  border: 1px solid #f1f3f5;
+}
+
+.timelineItem:hover {
+  background-color: #f1f5f9;
+  transform: translateX(3px);
+}
+
+.timelineDate {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background-color: #eff6ff;
+  color: #3b82f6;
+  border-radius: 8px;
+  margin-right: 0.75rem;
+}
+
+.timelineDay {
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.timelineMonth {
+  font-size: 0.6rem;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+.timelineContent {
+  flex: 1;
+}
+
+.timelineTitle {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: #1e293b;
+  margin-bottom: 0.25rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.timelineBadge {
+  display: inline-block;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.65rem;
+  font-weight: 500;
+  border-radius: 4px;
+}
+
+.timelineBadge[data-status="open"] {
+  background-color: #dcfce7;
+  color: #166534;
+}
+
+.timelineBadge[data-status="closed"] {
+  background-color: #fee2e2;
+  color: #991b1b;
+}
+
+.timelineBadge[data-status="upcoming"] {
+  background-color: #fef3c7;
+  color: #92400e;
+}
+
+.viewAllLink {
+  text-align: center;
+  margin-top: 0.75rem;
+}
+
+.viewAllLink a {
+  color: #3b82f6;
+  font-size: 0.8rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.viewAllLink a:hover {
+  text-decoration: underline;
+}
+
+/* Funding Analytics */
+.fundingCharts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.25rem;
+}
+
+.fundingChart {
+  background-color: #f9fafb;
+  border-radius: 8px;
+  padding: 1rem;
+  border: 1px solid #f1f3f5;
+}
+
+.chartTitle {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 1.25rem;
+  text-align: center;
+}
+
+.chartContainer {
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.barChart {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.barChartItem {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.barLabel {
+  width: 100px;
+  font-size: 0.7rem;
+  color: #64748b;
+  text-align: right;
+  padding-right: 0.75rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.barContainer {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  height: 18px;
+}
+
+.bar {
+  height: 8px;
+  border-radius: 999px;
+  transition: width 1s ease-out;
+}
+
+.barValue {
+  margin-left: 0.5rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+/* Recommendations */
+.recommendationsContainer {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 0.75rem;
+}
+
+.recommendationCard {
+  background-color: white;
+  border-radius: 8px;
+  padding: 1rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  border: 1px solid #f1f3f5;
+  transition: all 0.3s ease;
+}
+
+.recommendationCard:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.05);
+}
+
+.recommendationHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.matchScore {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  background: #e5e7eb;
+}
+
+.matchScoreInner {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background-color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: #3b82f6;
+}
+
+.recommendationMeta {
+  display: flex;
+  align-items: center;
+}
+
+.recommendationDeadline {
+  font-size: 0.65rem;
+  color: #64748b;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.recommendationTitle {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 0.75rem;
+  line-height: 1.4;
+  min-height: 36px;
+}
+
+.recommendationActions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.recommendationButton {
+  background-color: #f9fafb;
+  border: 1px solid #f1f3f5;
+  border-radius: 8px;
+  padding: 0.4rem 0.75rem;
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: #1e293b;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  transition: all 0.2s ease;
+  flex: 1;
+  justify-content: center;
+}
+
+.recommendationButton:hover {
+  background-color: #eff6ff;
+  border-color: #bfdbfe;
+}
+
+/* Quick Actions */
+.quickActionsContainer {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 0.75rem;
+}
+
+.quickActionButton {
+  background-color: #f9fafb;
+  border: 1px solid #f1f3f5;
+  border-radius: 8px;
+  padding: 1rem 0.75rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.quickActionButton svg {
+  color: #3b82f6;
+}
+
+.quickActionButton span {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #1e293b;
+  text-align: center;
+}
+
+.quickActionButton:hover {
+  background-color: #eff6ff;
+  border-color: #bfdbfe;
+  transform: translateY(-2px);
+}
+
+/* Loading state */
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  min-height: 100px;
+  font-size: 0.875rem;
+  color: #64748b;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .statsGrid,
+  .applicationStatusGrid,
+  .fundingCharts,
+  .recommendationsContainer,
+  .quickActionsContainer {
+    grid-template-columns: 1fr;
+  }
+  
+  .barLabel {
+    width: 90px;
+  }
+}
+
+@media (max-width: 640px) {
+  .sectionHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .statsCard,
+  .applicationStatusContainer,
+  .timelineContainer,
+  .fundingChart,
+  .recommendationCard,
+  .overviewSection,
+  .applicationStatusSection,
+  .timelineSection,
+  .fundingAnalyticsSection,
+  .recommendationsSection,
+  .quickActionsSection {
+    background-color: #1e293b;
+    border-color: #334155;
+  }
+  
+  .statusItem,
+  .timelineItem,
+  .fundingChart,
+  .quickActionButton {
+    background-color: #1e293b;
+    border-color: #334155;
+  }
+  
+  .statsTitle,
+  .statsInfo,
+  .statusTotalLabel,
+  .statusLabel,
+  .barLabel,
+  .recommendationDeadline {
+    color: #94a3b8;
+  }
+  
+  .statsValue,
+  .statusTotalNumber,
+  .statusCount,
+  .timelineTitle,
+  .chartTitle,
+  .barValue,
+  .recommendationTitle,
+  .sectionTitle,
+  .quickActionButton span {
+    color: #f1f5f9;
+  }
+  
+  .filterTab {
+    background-color: #334155;
+    color: #94a3b8;
+    border-color: #475569;
+  }
+  
+  .filterTab:hover {
+    background-color: #475569;
+    color: #f1f5f9;
+  }
+  
+  .activeFilter {
+    background-color: #1e40af;
+    color: #eff6ff;
+    border-color: #3b82f6;
+  }
+  
+  .timelineDate {
+    background-color: #1e40af;
+    color: #eff6ff;
+  }
+  
+  .recommendationButton {
+    background-color: #334155;
+    color: #f1f5f9;
+    border-color: #475569;
+  }
+  
+  .recommendationButton:hover {
+    background-color: #475569;
+    border-color: #3b82f6;
+  }
+  
+  .matchScoreInner {
+    background-color: #1e293b;
+    color: #60a5fa;
+  }
+} 
