@@ -508,4 +508,269 @@
   text-align: center;
   color: #6b7280;
   font-size: 0.875rem;
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100%;
+  font-size: 1.2rem;
+  color: #3b82f6;
+  background-color: #f9fafb;
+}
+
+.logoutButton {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: 16px;
+  padding: 6px 12px;
+  background-color: #f3f4f6;
+  border: none;
+  border-radius: 6px;
+  color: #4b5563;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.logoutButton:hover {
+  background-color: #e5e7eb;
+  color: #1f2937;
+}
+
+.logoutButton svg {
+  color: #4b5563;
+}
+
+.logoutButton:hover svg {
+  color: #ef4444;
+}
+
+/* Admin Section Styles */
+.adminSection {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #e5e7eb;
+}
+
+.sectionTitle {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 1rem;
+}
+
+.analyticsContainer {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.analyticsCard {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+}
+
+.analyticsHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.analyticsHeader h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #111827;
+}
+
+.analyticsSelect {
+  padding: 0.5rem;
+  border-radius: 6px;
+  border: 1px solid #d1d5db;
+  font-size: 0.875rem;
+  background-color: white;
+}
+
+.analyticsButton {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  background-color: #f3f4f6;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  color: #4b5563;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.analyticsButton:hover {
+  background-color: #e5e7eb;
+}
+
+/* Mock Chart Elements */
+.chartPlaceholder {
+  height: 200px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding: 1rem 0;
+}
+
+.mockChart {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+
+.mockBar {
+  width: 12%;
+  background-color: #3b82f6;
+  border-radius: 4px 4px 0 0;
+}
+
+.pieChartPlaceholder {
+  height: 200px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.mockPieChart {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  position: relative;
+  overflow: hidden;
+}
+
+.mockPieSection1 {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: #3b82f6;
+  clip-path: polygon(50% 0%, 100% 0%, 100% 100%, 0% 100%, 0% 62%, 50% 50%);
+}
+
+.mockPieSection2 {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: #10b981;
+  clip-path: polygon(50% 0%, 100% 0%, 100% 28%, 50% 50%);
+}
+
+.mockPieSection3 {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: #f59e0b;
+  clip-path: polygon(50% 0%, 100% 28%, 50% 50%);
+}
+
+.mockLegend {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.75rem;
+  padding-left: 1rem;
+}
+
+.mockLegendItem {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: #4b5563;
+}
+
+.mockLegendColor1,
+.mockLegendColor2,
+.mockLegendColor3 {
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+}
+
+.mockLegendColor1 {
+  background-color: #3b82f6;
+}
+
+.mockLegendColor2 {
+  background-color: #10b981;
+}
+
+.mockLegendColor3 {
+  background-color: #f59e0b;
+}
+
+/* Stats card additional styles */
+.statsIcon3 {
+  background-color: #ede9fe;
+  color: #7c3aed;
+}
+
+.statsIcon4 {
+  background-color: #fce7f3;
+  color: #db2777;
+}
+
+.statsDown {
+  color: #ef4444;
+}
+
+/* Recent Activity Section */
+.recentActivitySection {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #e5e7eb;
+}
+
+.activityList {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.activityItem {
+  display: flex;
+  gap: 1rem;
+  padding: 1rem;
+  border-radius: 8px;
+  background-color: white;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.activityIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background-color: #f3f4f6;
+  color: #4b5563;
+}
+
+.activityContent {
+  flex: 1;
+}
+
+.activityText {
+  margin: 0 0 0.25rem;
+  color: #1f2937;
+}
+
+.activityTime {
+  font-size: 0.875rem;
+  color: #6b7280;
 } 

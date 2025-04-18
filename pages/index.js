@@ -28,7 +28,7 @@ export default function Login() {
     
     if (!formData.email) {
       newErrors.email = 'Email is required'
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+    } else if (!/\S+@\S+\.\S+/.test(formData.email) && formData.email !== 'dani.admin') {
       newErrors.email = 'Email is invalid'
     }
     
@@ -46,10 +46,35 @@ export default function Login() {
     if (validateForm()) {
       setIsLoading(true)
       
+      // Check credentials
+      const isAdmin = formData.email === 'dani.admin' && formData.password === 'dani2025'
+      const isCustomer = (
+        (formData.email === 'customer@example.com' && formData.password === 'customer123') ||
+        (formData.email === 'marco@pmi.it' && formData.password === 'marco2025')
+      )
+      
+      // If credentials don't match any known user, show error
+      if (!isAdmin && !isCustomer && (formData.email !== 'dani.admin' && formData.password !== 'dani2025')) {
+        setErrors({ general: 'Invalid email or password' })
+        setIsLoading(false)
+        return
+      }
+      
       // Simulate API call
       setTimeout(() => {
-        // In a real application, you'd authenticate with a backend here
-        // and store user role information in the session/localStorage
+        // Store user role in localStorage
+        localStorage.setItem('userRole', isAdmin ? 'admin' : 'customer')
+        localStorage.setItem('isLoggedIn', 'true')
+        
+        // Store user name for profile display
+        if (isAdmin) {
+          localStorage.setItem('userName', 'Dani Admin')
+        } else if (formData.email === 'marco@pmi.it') {
+          localStorage.setItem('userName', 'Marco Bianchi')
+        } else {
+          localStorage.setItem('userName', 'Cliente Demo')
+        }
+        
         setIsLoading(false)
         router.push('/home')
       }, 1000)
@@ -61,7 +86,10 @@ export default function Login() {
     setIsLoading(true)
     
     setTimeout(() => {
-      // In a real app, would also store user role information here
+      // For demo purposes, Google sign-in will always be a customer role
+      localStorage.setItem('userRole', 'customer')
+      localStorage.setItem('isLoggedIn', 'true')
+      
       setIsLoading(false)
       router.push('/home')
     }, 1000)
@@ -88,6 +116,8 @@ export default function Login() {
           <p className={styles.subtitle}>Accedi per gestire le tue domande di finanziamento</p>
           
           <form className={styles.form} onSubmit={handleSubmit}>
+            {errors.general && <p className={styles.generalError}>{errors.general}</p>}
+            
             <div className={styles.inputGroup}>
               <label htmlFor="email">Email</label>
               <input 

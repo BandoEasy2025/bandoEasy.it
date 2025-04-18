@@ -375,4 +375,15 @@ select.input:focus {
   font-size: 13px;
   opacity: 0.8;
   text-align: center;
+}
+
+.generalError {
+  background-color: #fee2e2;
+  border-radius: 6px;
+  padding: 0.75rem;
+  font-size: 0.875rem;
+  color: #b91c1c;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  border-left: 3px solid #ef4444;
 } 
