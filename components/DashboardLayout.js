@@ -95,7 +95,7 @@ export default function DashboardLayout({ children }) {
         <nav className={styles.navMenu}>
           {/* Main Navigation */}
           <div className={styles.navSection}>
-            {!sidebarCollapsed && <div className={styles.sectionTitle}>Principale</div>}
+            {!sidebarCollapsed && <div className={styles.sidebarSectionTitle}>Principale</div>}
             
             <div 
               className={`${styles.navItem} ${activeItem === 'dashboard' ? styles.navItemActive : ''}`}
@@ -174,7 +174,7 @@ export default function DashboardLayout({ children }) {
           {/* Admin Section - Will be conditionally rendered based on role */}
           {userRole === 'admin' && (
             <div className={styles.navSection}>
-              {!sidebarCollapsed && <div className={styles.sectionTitle}>Amministrazione</div>}
+              {!sidebarCollapsed && <div className={styles.sidebarSectionTitle}>Amministrazione</div>}
               
               <div 
                 className={`${styles.navItem} ${activeItem === 'users' ? styles.navItemActive : ''}`}
@@ -272,7 +272,7 @@ export default function DashboardLayout({ children }) {
 
           {/* Support and Help section - visible to all users */}
           <div className={styles.navSection}>
-            {!sidebarCollapsed && <div className={styles.sectionTitle}>Supporto</div>}
+            {!sidebarCollapsed && <div className={styles.sidebarSectionTitle}>Supporto</div>}
             
             <div 
               className={`${styles.navItem} ${activeItem === 'guides' ? styles.navItemActive : ''}`}

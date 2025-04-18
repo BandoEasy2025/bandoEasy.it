@@ -130,17 +130,18 @@
 }
 
 .navSection {
-  margin-bottom: 1rem;
+  margin-bottom: 0.75rem;
 }
 
-.sectionTitle {
-  font-size: 0.65rem;
+.sidebarSectionTitle {
+  font-size: 0.63rem;
   text-transform: uppercase;
-  color: #6b7280;
-  font-weight: 600;
-  padding: 0.35rem 1.25rem;
-  margin-bottom: 0.35rem;
+  color: #4b5563;
+  font-weight: 700;
+  padding: 0.3rem 1.25rem;
+  margin-bottom: 0.25rem;
   letter-spacing: 0.05em;
+  opacity: 0.95;
 }
 
 .navItem {
