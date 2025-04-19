@@ -8,9 +8,14 @@ import Particles from './Particles';
 export default function LandingPage() {
   const router = useRouter();
   const [isVisible, setIsVisible] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [showScrollTop, setShowScrollTop] = useState(false);
   const statsRef = useRef(null);
   const heroRef = useRef(null);
   const featuresRef = useRef(null);
+  const benefitsRef = useRef(null);
+  const testimonialsRef = useRef(null);
+  const pricingRef = useRef(null);
 
   useEffect(() => {
     setIsVisible(true);
@@ -27,20 +32,69 @@ export default function LandingPage() {
       { threshold: 0.1 }
     );
     
-    // Observe elements
-    if (statsRef.current) observer.observe(statsRef.current);
-    if (featuresRef.current) observer.observe(featuresRef.current);
+    // Observe all animated sections
+    const elementsToObserve = [
+      statsRef.current,
+      featuresRef.current,
+      benefitsRef.current,
+      testimonialsRef.current,
+      pricingRef.current
+    ];
+    
+    elementsToObserve.forEach(element => {
+      if (element) observer.observe(element);
+    });
+    
+    // Handle scroll to top button visibility
+    const handleScroll = () => {
+      if (window.scrollY > 500) {
+        setShowScrollTop(true);
+      } else {
+        setShowScrollTop(false);
+      }
+    };
+    
+    window.addEventListener('scroll', handleScroll);
     
     return () => {
-      if (statsRef.current) observer.unobserve(statsRef.current);
-      if (featuresRef.current) observer.unobserve(featuresRef.current);
+      elementsToObserve.forEach(element => {
+        if (element) observer.unobserve(element);
+      });
+      window.removeEventListener('scroll', handleScroll);
     };
   }, []);
+
+  // Smooth scroll function
+  const scrollToSection = (elementRef) => {
+    if (elementRef && elementRef.current) {
+      elementRef.current.scrollIntoView({ behavior: 'smooth' });
+      setIsMobileMenuOpen(false); // Close menu after clicking
+    }
+  };
+
+  // Toggle mobile menu
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+    // Prevent body scroll when menu is open
+    if (!isMobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto';
+    }
+  };
+  
+  // Scroll to top function
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  };
 
   return (
     <div className={styles.landingContainer}>
       {/* Hero Section */}
-      <section className={`${styles.heroSection} ${isVisible ? styles.visible : ''}`} ref={heroRef}>
+      <section className={`${styles.heroSection} hero-section ${isVisible ? styles.visible : ''}`} ref={heroRef}>
         <div className={styles.particlesContainer}>
           <Particles className={styles.particles} key="landingParticles" />
         </div>
@@ -50,11 +104,19 @@ export default function LandingPage() {
             <Image src="/logo.svg" alt="BandoEasy Logo" width={40} height={40} />
             <span>BandoEasy</span>
           </div>
-          <div className={styles.navItems}>
-            <a href="#features">Funzionalità</a>
-            <a href="#benefits">Vantaggi</a>
-            <a href="#testimonials">Testimonianze</a>
-            <a href="#pricing">Prezzi</a>
+          
+          {/* Mobile Menu Toggle */}
+          <div className={styles.mobileMenuToggle} onClick={toggleMobileMenu}>
+            <div className={`${styles.menuBar} ${isMobileMenuOpen ? styles.open : ''}`}></div>
+            <div className={`${styles.menuBar} ${isMobileMenuOpen ? styles.open : ''}`}></div>
+            <div className={`${styles.menuBar} ${isMobileMenuOpen ? styles.open : ''}`}></div>
+          </div>
+          
+          <div className={`${styles.navItems} ${isMobileMenuOpen ? styles.mobileOpen : ''}`}>
+            <a onClick={() => scrollToSection(featuresRef)} style={{ cursor: 'pointer' }}>Funzionalità</a>
+            <a onClick={() => scrollToSection(benefitsRef)} style={{ cursor: 'pointer' }}>Vantaggi</a>
+            <a onClick={() => scrollToSection(testimonialsRef)} style={{ cursor: 'pointer' }}>Testimonianze</a>
+            <a onClick={() => scrollToSection(pricingRef)} style={{ cursor: 'pointer' }}>Prezzi</a>
           </div>
           <div className={styles.navCta}>
             <button 
@@ -75,7 +137,7 @@ export default function LandingPage() {
         <div className={styles.heroContent}>
           <div className={styles.heroText}>
             <h1 className={styles.heroTitle}>
-              <span className={styles.gradientText}>Semplifica</span> la ricerca e gestione dei bandi di finanziamento
+              <span className={`${styles.gradientText} gradient-text`}>Semplifica</span> la ricerca e gestione dei bandi di finanziamento
             </h1>
             <p className={styles.heroSubtitle}>
               BandoEasy è la piattaforma all-in-one che ti aiuta a trovare, monitorare e gestire i bandi di finanziamento più adatti alla tua azienda.
@@ -127,27 +189,37 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* Wave Divider */}
+      <div className={styles.waveDivider}>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 100" preserveAspectRatio="none">
+          <path fill="#f9f9f9" fillOpacity="1" d="M0,64L80,58.7C160,53,320,43,480,48C640,53,800,75,960,80C1120,85,1280,75,1360,69.3L1440,64L1440,100L1360,100C1280,100,1120,100,960,100C800,100,640,100,480,100C320,100,160,100,80,100L0,100Z"></path>
+        </svg>
+      </div>
+
       {/* Stats Section */}
       <section className={styles.statsSection} ref={statsRef}>
         <div className={styles.statsContainer}>
-          <div className={styles.statItem}>
+          <div className={`${styles.statItem} stat-item`}>
             <h3>500+</h3>
             <p>Bandi attivi monitorati</p>
           </div>
-          <div className={styles.statItem}>
+          <div className={`${styles.statItem} stat-item`}>
             <h3>€250M+</h3>
             <p>Finanziamenti ottenuti</p>
           </div>
-          <div className={styles.statItem}>
+          <div className={`${styles.statItem} stat-item`}>
             <h3>98%</h3>
             <p>Clienti soddisfatti</p>
           </div>
-          <div className={styles.statItem}>
+          <div className={`${styles.statItem} stat-item`}>
             <h3>5000+</h3>
             <p>Aziende iscritte</p>
           </div>
         </div>
       </section>
+
+      {/* Diagonal Divider */}
+      <div className={styles.diagonalDivider}></div>
 
       {/* Features Section */}
       <section className={styles.featuresSection} id="features" ref={featuresRef}>
@@ -157,80 +229,135 @@ export default function LandingPage() {
         </div>
         
         <div className={styles.featuresGrid}>
-          <div className={styles.featureCard}>
-            <div className={styles.featureIcon} style={{ backgroundColor: 'rgba(44, 190, 130, 0.1)' }}>
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2CBE82" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <circle cx="11" cy="11" r="8"></circle>
-                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-              </svg>
+          <div className={`${styles.featureCard} ${styles.featureCardPrimary}`}>
+            <div className={styles.featureIcon}>
+              <div className={styles.iconWrapper}>
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2CBE82" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="11" cy="11" r="8"></circle>
+                  <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+              </div>
             </div>
             <h3>Ricerca Intelligente</h3>
             <p>Trova rapidamente i bandi più adatti alla tua azienda grazie al nostro motore di ricerca basato su AI.</p>
+            <div className={styles.featureArrow}>
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2CBE82" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M5 12h14"></path>
+                <path d="M12 5l7 7-7 7"></path>
+              </svg>
+            </div>
           </div>
           
-          <div className={styles.featureCard}>
-            <div className={styles.featureIcon} style={{ backgroundColor: 'rgba(44, 190, 130, 0.1)' }}>
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2CBE82" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-                <polyline points="22 4 12 14.01 9 11.01"></polyline>
-              </svg>
+          <div className={`${styles.featureCard} ${styles.featureCardSecondary}`}>
+            <div className={styles.featureIcon}>
+              <div className={styles.iconWrapper}>
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2CBE82" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                  <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                </svg>
+              </div>
             </div>
             <h3>Match Personalizzato</h3>
             <p>Ricevi consigli su misura basati sul profilo della tua azienda e sulle tue esigenze specifiche.</p>
+            <div className={styles.featureArrow}>
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2CBE82" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M5 12h14"></path>
+                <path d="M12 5l7 7-7 7"></path>
+              </svg>
+            </div>
           </div>
           
-          <div className={styles.featureCard}>
-            <div className={styles.featureIcon} style={{ backgroundColor: 'rgba(44, 190, 130, 0.1)' }}>
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2CBE82" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <circle cx="12" cy="12" r="10"></circle>
-                <polyline points="12 6 12 12 16 14"></polyline>
-              </svg>
+          <div className={`${styles.featureCard} ${styles.featureCardPrimary}`}>
+            <div className={styles.featureIcon}>
+              <div className={styles.iconWrapper}>
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2CBE82" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <polyline points="12 6 12 12 16 14"></polyline>
+                </svg>
+              </div>
             </div>
             <h3>Scadenze e Reminder</h3>
             <p>Non perdere mai una scadenza importante grazie al nostro sistema di notifiche e promemoria.</p>
+            <div className={styles.featureArrow}>
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2CBE82" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M5 12h14"></path>
+                <path d="M12 5l7 7-7 7"></path>
+              </svg>
+            </div>
           </div>
           
-          <div className={styles.featureCard}>
-            <div className={styles.featureIcon} style={{ backgroundColor: 'rgba(44, 190, 130, 0.1)' }}>
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2CBE82" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
-              </svg>
+          <div className={`${styles.featureCard} ${styles.featureCardSecondary}`}>
+            <div className={styles.featureIcon}>
+              <div className={styles.iconWrapper}>
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2CBE82" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+                </svg>
+              </div>
             </div>
             <h3>Analisi e Report</h3>
             <p>Monitora le tue performance e visualizza statistiche dettagliate sui finanziamenti ottenuti.</p>
+            <div className={styles.featureArrow}>
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2CBE82" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M5 12h14"></path>
+                <path d="M12 5l7 7-7 7"></path>
+              </svg>
+            </div>
           </div>
           
-          <div className={styles.featureCard}>
-            <div className={styles.featureIcon} style={{ backgroundColor: 'rgba(44, 190, 130, 0.1)' }}>
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2CBE82" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                <polyline points="14 2 14 8 20 8"></polyline>
-                <line x1="16" y1="13" x2="8" y2="13"></line>
-                <line x1="16" y1="17" x2="8" y2="17"></line>
-                <polyline points="10 9 9 9 8 9"></polyline>
-              </svg>
+          <div className={`${styles.featureCard} ${styles.featureCardPrimary}`}>
+            <div className={styles.featureIcon}>
+              <div className={styles.iconWrapper}>
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2CBE82" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                  <polyline points="14 2 14 8 20 8"></polyline>
+                  <line x1="16" y1="13" x2="8" y2="13"></line>
+                  <line x1="16" y1="17" x2="8" y2="17"></line>
+                  <polyline points="10 9 9 9 8 9"></polyline>
+                </svg>
+              </div>
             </div>
             <h3>Gestione Documenti</h3>
             <p>Organizza e archivia tutti i documenti necessari per le tue domande di finanziamento.</p>
+            <div className={styles.featureArrow}>
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2CBE82" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M5 12h14"></path>
+                <path d="M12 5l7 7-7 7"></path>
+              </svg>
+            </div>
           </div>
           
-          <div className={styles.featureCard}>
-            <div className={styles.featureIcon} style={{ backgroundColor: 'rgba(44, 190, 130, 0.1)' }}>
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2CBE82" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                <circle cx="9" cy="7" r="4"></circle>
-                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-              </svg>
+          <div className={`${styles.featureCard} ${styles.featureCardSecondary}`}>
+            <div className={styles.featureIcon}>
+              <div className={styles.iconWrapper}>
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2CBE82" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="9" cy="7" r="4"></circle>
+                  <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                  <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                </svg>
+              </div>
             </div>
             <h3>Team Collaborativo</h3>
             <p>Collabora con il tuo team in tempo reale per preparare e inviare le domande di finanziamento.</p>
+            <div className={styles.featureArrow}>
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2CBE82" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M5 12h14"></path>
+                <path d="M12 5l7 7-7 7"></path>
+              </svg>
+            </div>
           </div>
         </div>
       </section>
 
+      {/* Curved Divider */}
+      <div className={styles.curvedDivider}>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 100" preserveAspectRatio="none">
+          <path fill="#f5f8ff" fillOpacity="1" d="M0,32L120,42.7C240,53,480,75,720,74.7C960,75,1200,53,1320,42.7L1440,32L1440,100L1320,100C1200,100,960,100,720,100C480,100,240,100,120,100L0,100Z"></path>
+        </svg>
+      </div>
+
       {/* How It Works Section */}
-      <section className={styles.howItWorksSection}>
+      <section className={styles.howItWorksSection} id="benefits" ref={benefitsRef}>
         <div className={styles.sectionHeader}>
           <h2>Come Funziona</h2>
           <p>Tre semplici passaggi per iniziare a utilizzare BandoEasy</p>
@@ -261,8 +388,8 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Testimonials Section */}
-      <section className={styles.testimonialsSection} id="testimonials">
+      {/* Testimonials Section with Background Pattern */}
+      <section className={`${styles.testimonialsSection} ${styles.patternedBackground}`} id="testimonials" ref={testimonialsRef}>
         <div className={styles.sectionHeader}>
           <h2>Cosa Dicono i Nostri Clienti</h2>
           <p>Scopri le storie di successo delle aziende che utilizzano BandoEasy</p>
@@ -320,7 +447,7 @@ export default function LandingPage() {
       </section>
 
       {/* Pricing Section */}
-      <section className={styles.pricingSection} id="pricing">
+      <section className={styles.pricingSection} id="pricing" ref={pricingRef}>
         <div className={styles.sectionHeader}>
           <h2>Piani e Prezzi</h2>
           <p>Scegli il piano più adatto alle esigenze della tua azienda</p>
@@ -329,6 +456,7 @@ export default function LandingPage() {
         <div className={styles.pricingContainer}>
           <div className={styles.pricingCard}>
             <div className={styles.pricingHeader}>
+              <div className={styles.pricingBadge}>Base</div>
               <h3>Starter</h3>
               <div className={styles.price}>
                 <span className={styles.currency}>€</span>
@@ -351,6 +479,7 @@ export default function LandingPage() {
           <div className={`${styles.pricingCard} ${styles.popularPlan}`}>
             <div className={styles.popularBadge}>Più popolare</div>
             <div className={styles.pricingHeader}>
+              <div className={styles.pricingBadge}>Professionale</div>
               <h3>Business</h3>
               <div className={styles.price}>
                 <span className={styles.currency}>€</span>
@@ -372,6 +501,7 @@ export default function LandingPage() {
           
           <div className={styles.pricingCard}>
             <div className={styles.pricingHeader}>
+              <div className={styles.pricingBadge}>Avanzato</div>
               <h3>Enterprise</h3>
               <div className={styles.price}>
                 <span className={styles.currency}>€</span>
@@ -393,8 +523,8 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className={styles.ctaSection}>
+      {/* CTA Section with Gradient Background */}
+      <section className={`${styles.ctaSection} ${styles.gradientBackground}`}>
         <div className={styles.ctaContent}>
           <h2>Pronto a trasformare il modo in cui gestisci i finanziamenti?</h2>
           <p>Inizia oggi stesso a utilizzare BandoEasy e scopri tutte le opportunità che ti stai perdendo.</p>
@@ -404,19 +534,50 @@ export default function LandingPage() {
               onClick={() => router.push('/signup')}
             >
               Inizia gratuitamente
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M5 12h14"></path>
+                <path d="M12 5l7 7-7 7"></path>
+              </svg>
             </button>
             <button 
               className={styles.secondaryCtaButton}
               onClick={() => router.push('/contact')}
             >
               Richiedi una demo
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polygon points="10 8 16 12 10 16 10 8"></polygon>
+              </svg>
             </button>
+          </div>
+          <div className={styles.ctaTrustBadges}>
+            <div className={styles.trustBadge}>
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+              </svg>
+              <span>Sicurezza garantita</span>
+            </div>
+            <div className={styles.trustBadge}>
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+              </svg>
+              <span>Prova gratuita di 14 giorni</span>
+            </div>
+            <div className={styles.trustBadge}>
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                <circle cx="12" cy="10" r="3"></circle>
+              </svg>
+              <span>100% Made in Italy</span>
+            </div>
           </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className={styles.footer}>
+      <footer className={`${styles.footer} page-footer`}>
         <div className={styles.footerContent}>
           <div className={styles.footerLogo}>
             <Image src="/logo.svg" alt="BandoEasy Logo" width={40} height={40} />
@@ -427,8 +588,8 @@ export default function LandingPage() {
             <div className={styles.footerColumn}>
               <h4>Prodotto</h4>
               <ul>
-                <li><a href="#features">Funzionalità</a></li>
-                <li><a href="#pricing">Prezzi</a></li>
+                <li><a onClick={() => scrollToSection(featuresRef)} style={{ cursor: 'pointer' }}>Funzionalità</a></li>
+                <li><a onClick={() => scrollToSection(pricingRef)} style={{ cursor: 'pointer' }}>Prezzi</a></li>
                 <li><a href="/roadmap">Roadmap</a></li>
                 <li><a href="/release-notes">Note di rilascio</a></li>
               </ul>
@@ -498,6 +659,15 @@ export default function LandingPage() {
           </div>
         </div>
       </footer>
+
+      {/* Scroll to Top Button */}
+      {showScrollTop && (
+        <button className={styles.scrollTopButton} onClick={scrollToTop}>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <polyline points="18 15 12 9 6 15"></polyline>
+          </svg>
+        </button>
+      )}
     </div>
   );
 } 
